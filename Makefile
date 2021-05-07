@@ -1,3 +1,5 @@
+include .env
+
 COMPOSE = docker compose
 UP = $(COMPOSE) up
 RUN_BACK = $(COMPOSE) run back
@@ -21,4 +23,4 @@ lint:
 	$(RUN_BACK) golangci-lint run
 
 mysql:
-	$(COMPOSE) exec -it db bash -c 'mysql -u $$DB_USERNAME -p$$DB_PASSWORD $$DB_DATABASE'
+	docker-compose exec db bash -c 'mysql -u $(DB_USERNAME) -p$(DB_PASSWORD) $(DB_DATABASE)'

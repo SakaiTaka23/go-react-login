@@ -19,8 +19,5 @@ build:
 tidy:
 	$(RUN_BACK) go mod tidy
 
-lint:
-	$(RUN_BACK) golangci-lint run
-
 mysql:
 	docker-compose exec db bash -c 'mysql -u $(DB_USERNAME) -p$(DB_PASSWORD) $(DB_DATABASE)'

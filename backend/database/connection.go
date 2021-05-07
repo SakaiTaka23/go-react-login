@@ -1,6 +1,8 @@
 package database
 
 import (
+	"os"
+
 	"github.com/SakaiTaka23/go-react-login/models"
 
 	"gorm.io/driver/mysql"
@@ -10,7 +12,12 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	connection, err := gorm.Open(mysql.Open("fumi:abc123@tcp(127.0.0.1:3306)/go-react-login"), &gorm.Config{})
+	user := os.Getenv("DB_USERNAME")
+	pass := os.Getenv("DB_PASSWORD")
+	protocol := "tcp(db:3306)"
+	dbname := os.Getenv("DB_DATABASE")
+
+	connection, err := gorm.Open(mysql.Open(user+":"+pass+"@"+protocol+"/"+dbname), &gorm.Config{})
 
 	if err != nil {
 		panic("could not connect to the database")
@@ -18,5 +25,7 @@ func Connect() {
 
 	DB = connection
 
-	connection.AutoMigrate(&models.User{})
+	if err := connection.AutoMigrate(&models.User{}); err != nil {
+		panic(err)
+	}
 }
